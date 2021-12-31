@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import MemoisedTodoItemWithoutComparator from "./TodoItem";
+import TodoItem from "./TodoItem";
 import { v4 as uuid } from "uuid";
 
 function Todo() {
@@ -23,13 +23,13 @@ function Todo() {
     ]);
   };
 
-  const handleToggle = React.useCallback((id) => {
-    setData((prev) =>
-      prev.map((item) =>
-        item.id === id ? { ...item, status: !item.status } : item
-      )
+  const handleToggle = (id) => {
+    const updatedData = data.map((item) =>
+      item.id === id ? { ...item, status: !item.status } : item
     );
-  }, []);
+
+    setData(updatedData, []);
+  };
   console.log(data);
   return (
     <div>
@@ -42,7 +42,7 @@ function Todo() {
         <button onClick={() => handleAdd(state)}> ADD </button>
       </div>
       {data?.map((item) => (
-        <MemoisedTodoItemWithoutComparator
+        <TodoItem
           key={item.id}
           id={item.id}
           title={item.title}

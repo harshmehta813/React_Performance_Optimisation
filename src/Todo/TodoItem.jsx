@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 
 const delay = (time) => {
   const start = Date.now();
@@ -16,8 +16,7 @@ const areEqual = (prevProps, nextProps) => {
 };
 
 const TodoItem = ({ title, id, status, handleDelete, onToggle }) => {
-  /** Expensive calculation */
-  const time = delay(200);
+  const time = useMemo(() => delay(200), []);
 
   return (
     <div
