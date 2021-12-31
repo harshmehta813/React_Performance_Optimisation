@@ -15,9 +15,10 @@ const areEqual = (prevProps, nextProps) => {
   return false;
 };
 
-const TodoItem = ({ title, id, status, handleDelete, handleToggle }) => {
+const TodoItem = ({ title, id, status, handleDelete, onToggle }) => {
   /** Expensive calculation */
   const time = delay(200);
+
   return (
     <div
       style={{
@@ -27,14 +28,14 @@ const TodoItem = ({ title, id, status, handleDelete, handleToggle }) => {
         gap: "1rem"
       }}
     >
-      <h3>{title}</h3>
+      <div>{title}</div>
+      <button onClick={() => onToggle(id)}> {`${status}`}</button>
       <div>{time}</div>
-      <h3>{`${status ? "DONE" : "PENDING"}`}</h3>
-      <button onClick={() => handleToggle(id)}>TOGGLE</button>
     </div>
   );
 };
 
+export const MemoisedTodoItemWithoutComparator = React.memo(TodoItem);
 export const MemoisedTodoItem = React.memo(TodoItem, areEqual);
 
 export default TodoItem;

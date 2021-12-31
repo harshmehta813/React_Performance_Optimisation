@@ -1,9 +1,10 @@
-import { useState } from "react";
-import TodoInput from "./TodoInput";
-import MemoisedTodoItem from "./TodoItem";
+import React, { useState } from "react";
+import MemoisedTodoItemWithoutComparator from "./TodoItem";
 import { v4 as uuid } from "uuid";
 
 function Todo() {
+  // BE CAREFUL HERE
+  const [state, setState] = useState("");
   const [data, setData] = useState(() => {
     return new Array(5).fill(0).map((_, i) => ({
       id: i,
@@ -22,24 +23,31 @@ function Todo() {
     ]);
   };
 
-  const handleToggle = (id) => {
+  const handleToggle = React.useCallback((id) => {
     setData((prev) =>
       prev.map((item) =>
         item.id === id ? { ...item, status: !item.status } : item
       )
     );
-  };
+  }, []);
   console.log(data);
   return (
     <div>
-      <TodoInput onAdd={handleAdd} />
+      <div>
+        <input
+          placeholder="add something"
+          value={state}
+          onChange={(e) => setState(e.target.value)}
+        />
+        <button onClick={() => handleAdd(state)}> ADD </button>
+      </div>
       {data?.map((item) => (
-        <MemoisedTodoItem
+        <MemoisedTodoItemWithoutComparator
           key={item.id}
           id={item.id}
           title={item.title}
           status={item.status}
-          handleToggle={handleToggle}
+          onToggle={handleToggle}
         />
       ))}
     </div>
